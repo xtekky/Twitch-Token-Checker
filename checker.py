@@ -1,22 +1,15 @@
+import requests
+
 
 def check(token):
     headers = {
         'User-Agent':useragent,
         'Authorization':f'OAuth {token}'
     }
-
-    response = ''
-    proxy = ''
-    link = 'https://id.twitch.tv/oauth2/validate'
-
-    if self.use_proxy == 1:
-        proxy = self.GetRandomProxy()
-        response = requests.get(link,headers=headers,proxies=proxy)
-    else:
-        response = requests.get(link,headers=headers)
+    response = requests.get('https://id.twitch.tv/oauth2/validate', headers=headers)
 
     if 'client_id' in response.text:
-      print(token, file=open('valid_tokens.txt', 'a'))
+        print(token, file=open('valid_tokens.txt', 'a'))
 
 tokens = []
 
