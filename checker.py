@@ -18,4 +18,4 @@ with open('tokens.txt', 'r') as file:
         tokens.append(line.rstrip())
 
 for token in tokens:
-    threading.Thread(target=check, args=(id,)).start()
+    threading.Thread(target=check, args=(token,)).start()
