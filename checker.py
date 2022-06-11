@@ -6,13 +6,16 @@ class Main:
 
         self.user_list = self.scrape()
 
-        self.tokens = []
+        self.tokens  = open("tokens.txt", "r").read().splitlines()
+        self.proxies = open("proxies.txt", "r").read().splitlines()
 
         self.valid = 0
         self.invalid = 0
         self.locked = 0
 
         threading.Thread(target=self.title).start()
+        
+        
 
         self.check()
 
@@ -26,6 +29,7 @@ class Main:
             try:
                 _token = random.choice(self.tokens)
                 _id = random.choice(self.user_list)
+                _xproxy = random.choice(self.proxies)
                 response = requests.post(
                     'https://gql.twitch.tv/gql',
                     headers={
@@ -55,7 +59,12 @@ class Main:
                                         }
                                 }
                         }
-                    ]
+                    ],
+                    proxies = {
+                        "https": f"http://{_xproxy}",
+                        "http": f"http://{_xproxy}"
+                    },
+                    timeout = 20
                 )
                 try:
                     if response.json()[0]['data']['followUser']['error']['code'] == "FORBIDDEN":
@@ -138,3 +147,5 @@ class Main:
             sys.exit("Error while scraping id's")
 
         return _list
+
+    Main()
